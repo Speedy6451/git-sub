@@ -1,0 +1,5 @@
+#!/bin/sh
+
+remote=$(cat $2/.subtree)
+threeplus=`echo $@ | tr ' ' '\n' | tail -n +3 - | tr '\n' ' '`
+git subtree $1 -P $2 $remote $threeplus
