@@ -8,16 +8,42 @@ command=$1
 
 case "$command" in
     init)
-        shift 2
+        shift
+
+        case "$1" in
+            -p|--parent)
+                shift
+
+                path=$1
+                dir=$(dirname $path)
+                name=$(basename $path)
+
+                mkdir -p $dir
+                subtree=$dir/.subtree-$name
+                path=$dir
+                ;;
+            *);;
+        esac
+
+        shift
+
+        mkdir -p $path
         echo $@ > $subtree
         exit 0
         ;;
-    add|merge|split|pull|push);;
+    add|merge|split|pull|push)
+        dir=$(dirname $path)
+        name=$(basename $path)
+        ;;
     *)
         echo "invalid subtree command"
         exit 1
         ;;
 esac
+
+if test ! -f "$subtree"; then
+    subtree=$dir/.subtree-$name
+fi
 
 if test ! -f "$subtree"; then
     echo "$subtree does not exist"

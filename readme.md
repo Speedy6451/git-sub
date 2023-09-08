@@ -5,7 +5,7 @@ Opinionated porcelain for git-subtree
 
 This git command stores remote information to use when calling `git subtree`
 
-`git sub init example-subfolder git@example.com:repo.git master`  
+`git sub init --parent example-subfolder git@example.com:repo.git master`  
 `git sub add example-subfolder --squash`
 
 ### Installation
@@ -18,12 +18,13 @@ $ git clone https://github.com/Speedy6451/git-sub
 
 ### Commands
 
-`git sub init <prefix> <repository> <remote-ref>`  
+`git sub init [--parent|-p] <prefix> <repository> <remote-ref>`  
 Creates a `prefix/.subtree`[^1] file with remote information  
-Required before calling any other `git sub` commands
+Required before calling any other `git sub` commands  
+The `--parent` option will move the `.subtree` file into the parent directory
 
 `git sub <git-subtree-command> <prefix> <git-subtree-args>`  
   Runs `git subtree` with the specified prefix against the associated remote
 
-[^1]: note: `.subtree` files will appear in the subtree.  
-If that isn't something that you want, add `**/.subtree` to your `.gitignore`
+[^1]: note: `.subtree` files will appear in the subtree by default  
+If that isn't your desired behavior, add `**/.subtree*` to your `.gitignore` if you don't want to track remotes, or pass `--parent` to put the metadata in the containing folder
