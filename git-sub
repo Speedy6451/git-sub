@@ -1,5 +1,30 @@
 #!/bin/sh
+#
+# git-sub: opinionated porcelain for git-subtree
 
-remote=$(cat $2/.subtree)
+path=$2
+subtree=$2/.subtree
+command=$1
+
+case "$command" in
+    init)
+        shift 2
+        echo $@ > $subtree
+        exit 0
+        ;;
+    add|merge|split|pull|push);;
+    *)
+        echo "invalid subtree command"
+        exit -1
+        ;;
+esac
+
+if test ! -f "$subtree"; then
+    echo "$subtree does not exist"
+    echo "try: git sub init ${path:=<prefix>} <repository> <remote-ref>"
+    exit -1
+fi
+
+remote=$(cat $subtree)
 threeplus=`echo $@ | tr ' ' '\n' | tail -n +3 - | tr '\n' ' '`
-git subtree $1 -P $2 $remote $threeplus
+git subtree $command -P $path $remote $threeplus
