@@ -15,14 +15,14 @@ case "$command" in
     add|merge|split|pull|push);;
     *)
         echo "invalid subtree command"
-        exit -1
+        exit 1
         ;;
 esac
 
 if test ! -f "$subtree"; then
     echo "$subtree does not exist"
     echo "try: git sub init ${path:=<prefix>} <repository> <remote-ref>"
-    exit -1
+    exit 1
 fi
 
 remote=$(cat $subtree)
